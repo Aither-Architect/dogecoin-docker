@@ -1,10 +1,25 @@
 # DogecoinD Docker Image
 
 ## ALPHA RELEASE !!!
-While there's enough information around the web to get started running a Dogecoin FullNode, there isn't any central documentation for ongoing operations and maintenance of a Doge server. This repo along with dogecoin-helm aim to fill that gap over time.
+This is a Docker image for running a DogecoinD FullNode and is being developed specifically for use in the following Helm chart:
 
-## Testing and Supported K8s Platforms
-Automated Helm-based tests are on the roadmap in order to scale development/support across K8s platforms/distros (EKS Support is next) For now this has been tested on a DigitalOcean Kubernetes 1.20 cluster as that's the lowest barrier of entry i've found into the k8s arena and we want this in as many hands as possible.
+https://github.com/Aither-Architect/dogecoin-helm
 
-## CONTRIBUTING
-Pull Requests are welcome! It's as simple as that for now.
+In its current form, the only thing that needs to be passed into the container at runtime is a `dogecoin.conf` file at `/etc/dogecoin.conf`. The accompanying Helm chart achieves this by collecting the configuration in the relevant section of `values.yaml` file and mounting/manifesting it as a file in the appropriate location:
+
+https://github.com/Aither-Architect/dogecoin-helm/blob/main/templates/deployment.yaml#L38
+
+If you are trying to run this image solely using Docker, you can use the standard volume mounting mechanism to get your `dogecoin.conf` in place.
+
+### Contributing
+1. Pull Requests are more than welcome! Fork the repo, create a feature branch with a semantic name (There is no preferred naming convention; just make it meaningful), and create a pull request to merge back to the `main` branch in the original repo for enhancements and bug fixes. 
+
+2. Submit Issues for enhancements and bug fixes.
+
+
+### Roadmap:
+- Map out configuration options available:
+  - Switches to the binary itself
+  - Available dogecoin.conf options
+- Parameterize runtime configuration for flexibility
+- Create an ARM based docker image

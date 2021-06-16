@@ -1,14 +1,44 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: docker:stable
+version: 2.1
+commands:
+  setup:
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.09.3
-      - run: apk add make curl
-      - run: mkdir -vp ~/.docker/cli-plugins/
-      - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64
-      - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
-      - run: docker buildx inspect --bootstrap
+      - run:
+          name: Setup buildx and qemu
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y qemu-user-static
+            sudo apt-get install -y binfmt-support
+      - run:
+          name: Check versions
+          command: |
+            qemu-aarch64-static --version
+            update-binfmts --version 
+      - run:
+          name: Create builder
+          command: |
+            export DOCKER_CLI_EXPERIMENTAL=enabled
+            docker buildx create --name doge-builder
+            docker buildx use doge-builder
+            docker buildx inspect --bootstrap
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - setup
+      - run:
+          name: Login to Docker Hub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Build multiarch docker image and push
+          command: |
+            DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform linux/arm64,linux/amd64 --push -t aitherarchitect/dogecoin:1.14.3-arch .
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          context:
+            - DOCKER_HUB

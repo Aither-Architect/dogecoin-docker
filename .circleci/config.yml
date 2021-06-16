@@ -11,4 +11,4 @@ jobs:
       - run: mkdir -vp ~/.docker/cli-plugins/
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
-      - run: docker buildx ls --bootstrap
+      - run: docker buildx inspect --bootstrap

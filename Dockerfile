@@ -8,9 +8,18 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 WORKDIR /wowmuchdocker
   
 RUN wget https://github.com/dogecoin/dogecoin/releases/download/v1.14.3/dogecoin-1.14.3-x86_64-linux-gnu.tar.gz && \
-    tar -xvzf ./dogecoin-1.14.3-x86_64-linux-gnu.tar.gz && \
+    wget https://github.com/dogecoin/dogecoin/releases/download/v1.14.3/dogecoin-1.14.3-aarch64-linux-gnu.tar.gz && \
+    mkdir x86_64 && \
+    mkdir aarch64 && \
+    tar -xvzf ./dogecoin-1.14.3-x86_64-linux-gnu.tar.gz -C ./x86_64 && \
+    tar -xvzf ./dogecoin-1.14.3-aarch64-linux-gnu.tar.gz -C ./aarch64 && \
     rm ./dogecoin-1.14.3-x86_64-linux-gnu.tar.gz && \
-    cd dogecoin-1.14.3 && \
-    mkdir data
+    rm ./dogecoin-1.14.3-aarch64-linux-gnu.tar.gz && \
+    cd ./x86_64/dogecoin-1.14.3 && \
+    mkdir data && \
+    cd ../.. && \
+    cd ./aarch64/dogecoin-1.14.3 && \
+    mkdir data && \
+    cd ../..
 
-CMD ["/wowmuchdocker/dogecoin-1.14.3/bin/dogecoind", "-conf=/etc/dogecoin.conf", "-printtoconsole"]
+CMD ["/wowmuchdocker/${ARCH}/dogecoin-1.14.3/bin/dogecoind", "-conf=/etc/dogecoin.conf", "-printtoconsole"]

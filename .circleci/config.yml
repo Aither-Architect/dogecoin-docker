@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Build multiarch docker image and push
           command: |
-            DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform linux/arm64,linux/amd64 --push -t aitherarchitect/dogecoin:archtest .
+                  DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform linux/arm64,linux/amd64 --push -t aitherarchitect/dogecoin:1.14.3 .
 workflows:
   version: 2
   build-and-deploy:

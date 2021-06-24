@@ -6,7 +6,7 @@
 
 ## EXPERIMENTAL
 
-In its current form, the only thing that needs to be passed into the container at runtime is a `dogecoin.conf` file at `/etc/dogecoin.conf`. The accompanying Helm chart achieves this by collecting the configuration in the relevant section of `values.yaml` file and mounting/manifesting it as a file in the [appropriate location](https://github.com/Aither-Architect/dogecoin-helm/blob/main/templates/deployment.yaml#L38)
+In its current form, the only thing that needs to be passed into the container at runtime is a `dogecoin.conf` file at `/etc/dogecoin.conf`. The accompanying Helm chart achieves this by collecting the configuration in the relevant section of `values.yaml` file and mounting/manifesting it as a file in the [appropriate location](https://github.com/Aither-Architect/dogecoin-helm/blob/main/templates/deployment.yaml#L38).
 
 If you are trying to run this image solely using Docker, you can use the standard volume mounting mechanism to get your `dogecoin.conf` in place.
 

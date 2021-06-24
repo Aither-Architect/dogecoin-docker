@@ -21,4 +21,3 @@ If you are trying to run this image solely using Docker, you can use the standar
   - Switches to the binary itself
   - Available dogecoin.conf options
 - Parameterize runtime configuration for flexibility
-- Create an ARM based docker image
